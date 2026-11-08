@@ -97,6 +97,9 @@ status-website:
   favicon: https://xtermium.com/favicon.svg
   name: XTermium status
   theme: dark
+  # The page reads incidents from GitHub's API in the visitor's browser (60 calls an hour per IP
+  # without sign-in); each answer is kept in the browser for 10 minutes instead of the default 2.
+  productionCacheTime: 600000
   introTitle: "Is XTermium working?"
   introMessage: "Services are checked every 5 minutes with GitHub Actions."
   navbar:
