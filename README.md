@@ -30,3 +30,5 @@ Live at **https://status.xtermium.com**. Checked every five minutes by [Upptime]
 <!--end: status pages-->
 
 Planned work is announced as an issue from the "Maintenance Event" template.
+
+Fonts in `assets/fonts` (Commissioner, JetBrains Mono) are under the SIL Open Font License 1.1, as on xtermium.com.

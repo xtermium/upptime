@@ -14,7 +14,7 @@ const API = [
   new RegExp(`^/repos/${REPO}/issues/\\d+/comments$`),
   new RegExp(`^/repos/${REPO}/commits$`),
 ];
-const RAW = new RegExp(`^/${REPO}/(master|main|HEAD)/(history|graphs|api)/[\\w./-]+$`);
+const RAW = new RegExp(`^/${REPO}/master/(history|graphs)/[\\w./-]+$`); // the page asks for master/ only
 
 /** Seconds until 90 s after the next 5-minute boundary: when the next check's commit is in. */
 export function ttl(nowMs) {
