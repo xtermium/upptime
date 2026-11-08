@@ -289,22 +289,22 @@
   },
   {
     "name": "Alert test",
-    "url": "https://xtermium.com/upptime-alert-test",
+    "url": "https://xtermium.com/",
     "icon": "https://icons.duckduckgo.com/ip3/xtermium.com.ico",
     "slug": "alert-test",
-    "status": "down",
-    "uptime": "53.03%",
-    "uptimeDay": "53.03%",
-    "uptimeWeek": "53.03%",
-    "uptimeMonth": "53.03%",
-    "uptimeYear": "53.03%",
-    "time": 63,
-    "timeDay": 63,
-    "timeWeek": 63,
-    "timeMonth": 63,
-    "timeYear": 63,
+    "status": "up",
+    "uptime": "30.28%",
+    "uptimeDay": "30.28%",
+    "uptimeWeek": "30.28%",
+    "uptimeMonth": "30.28%",
+    "uptimeYear": "30.28%",
+    "time": 57,
+    "timeDay": 57,
+    "timeWeek": 57,
+    "timeMonth": 57,
+    "timeYear": 57,
     "dailyMinutesDown": {
-      "2026-11-08": 0
+      "2026-11-08": 1
     }
   }
 ]
