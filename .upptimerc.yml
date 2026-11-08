@@ -72,9 +72,6 @@ sites:
   - name: Scoop bucket updates
     url: https://github.com/xtermium/scoop/actions/workflows/excavator.yml/badge.svg
     __dangerous__body_down_if_text_missing: passing
-  # TEMPORARY: proves Discord alerts work; removed right after.
-  - name: Alert test
-    url: https://xtermium.com/
 
 status-website:
   cname: status.xtermium.com
