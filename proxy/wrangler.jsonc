@@ -1,0 +1,9 @@
+// The status page's GitHub proxy (worker.js). Deploy: `npx wrangler deploy` from this folder.
+// Secret: `npx wrangler secret put GITHUB_TOKEN` (a fine-grained token with public-repo read only).
+{
+  "name": "xtermium-status-proxy",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "status-api.xtermium.com", "custom_domain": true }]
+}
