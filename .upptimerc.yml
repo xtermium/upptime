@@ -129,7 +129,7 @@ status-website:
     :focus-visible{outline:2px solid #ffb000;outline-offset:2px}
     .group-title{margin:2rem 0 .5rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9d9da6}
     .group-title::before{content:"$ ";color:#ffb000}
-    article.graph{background-blend-mode:luminosity}
+    article.graph{background-image:linear-gradient(90deg,#0b0b0d 45%,rgba(11,11,13,.86)),var(--background)!important;background-size:auto,contain!important}
     footer{color:#9d9da6}
   # Groups the live-status cards by the "Category · " prefix of each name (see the top of this file).
   js: >-
