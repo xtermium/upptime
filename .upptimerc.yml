@@ -74,7 +74,7 @@ sites:
     __dangerous__body_down_if_text_missing: passing
   # TEMPORARY: proves Discord alerts work; removed right after.
   - name: Alert test
-    url: https://xtermium.com/upptime-alert-test
+    url: https://xtermium.com/
 
 status-website:
   cname: status.xtermium.com
