@@ -1,77 +1,95 @@
 # XTermium's status page: https://status.xtermium.com
 # Upptime checks every endpoint below from GitHub Actions every five minutes (off our own server on
 # purpose). Only health is shown: no accounts, people, payments or revenue. Every URL here is public.
+#
+# Names are "Category · Check": the page's script (status-website.js) groups the cards under one
+# heading per category, in the order below. `slug` keeps each check's history file.
 owner: xtermium
 repo: upptime
 
 sites:
+  # Sign-in: our own auth service, then the providers people sign in with.
+  - name: Authentication · Sign-in service
+    slug: sign-in-service
+    url: https://account.xtermium.com/auth/ok
+    __dangerous__body_down_if_text_missing: '"ok":true'
+  - name: Authentication · Google
+    slug: sign-in-with-google
+    url: https://accounts.google.com/.well-known/openid-configuration
+    __dangerous__body_down_if_text_missing: '"authorization_endpoint"'
+  - name: Authentication · GitHub
+    slug: sign-in-with-git-hub
+    url: https://github.com/login
+  - name: Authentication · Discord
+    slug: sign-in-with-discord
+    url: https://discord.com/api/v10/gateway
+    __dangerous__body_down_if_text_missing: '"url"'
+
   # Sync server (account.xtermium.com). /healthz answers 503 when the database or the disk fails;
   # 502/530 mean Cloudflare can't reach the server. Each check reads one field, so each signal gets
-  # its own line on the page.
-  - name: Sync server
+  # its own card.
+  - name: Sync · Server
+    slug: sync-server
     url: https://account.xtermium.com/healthz
     expectedStatusCodes: [200, 503]
     __dangerous__body_down_if_text_missing: '"db":"ok"'
     maxResponseTime: 2000
-  - name: Sync storage
+  - name: Sync · Storage
+    slug: sync-storage
     url: https://account.xtermium.com/healthz
     expectedStatusCodes: [200, 503]
     __dangerous__body_down_if_text_missing: '"storage":"ok"'
-  - name: Sync server load
+  - name: Sync · Load
+    slug: sync-server-load
     url: https://account.xtermium.com/healthz
     expectedStatusCodes: [200, 503]
     __dangerous__body_down_if_text_missing: '"busy":'
     __dangerous__body_degraded: '"busy":true'
 
-  # Sign-in: our own auth service, then the providers people sign in with.
-  - name: Sign-in service
-    url: https://account.xtermium.com/auth/ok
-    __dangerous__body_down_if_text_missing: '"ok":true'
-  - name: Sign in with Google
-    url: https://accounts.google.com/.well-known/openid-configuration
-    __dangerous__body_down_if_text_missing: '"authorization_endpoint"'
-  - name: Sign in with GitHub
-    url: https://github.com/login
-  - name: Sign in with Discord
-    url: https://discord.com/api/v10/gateway
-    __dangerous__body_down_if_text_missing: '"url"'
-
   # Terminal Co-op: the relay that carries traffic, and whether a ring can be started (the server
   # makes the writes of a new ring for a throwaway account and rolls them back).
-  - name: Co-op relay
+  - name: Co-op · Relay
+    slug: co-op-relay
     url: https://relay.xtermium.com/healthz
     __dangerous__body_down_if_text_missing: '"status":"ok"'
-  - name: Co-op ring creation
+  - name: Co-op · Ring creation
+    slug: co-op-ring-creation
     url: https://account.xtermium.com/healthz/coop
     __dangerous__body_down_if_text_missing: '"rings":"ok"'
 
+  # GitHub Actions itself, then the pipelines of XTermium's public repositories (each badge reads
+  # "passing" while the workflow's latest run on main passed).
+  - name: Releases · GitHub Actions
+    slug: git-hub-actions
+    url: https://www.githubstatus.com/api/v2/components.json
+    __dangerous__body_down_if_text_missing: '"name":"Actions","status":"operational"'
+  - name: Releases · Nightly build
+    slug: app-nightly-build
+    url: https://github.com/xtermium/xtermium/actions/workflows/nightly.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: Releases · Release build
+    slug: app-release-build
+    url: https://github.com/xtermium/xtermium/actions/workflows/release.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: Releases · App build
+    slug: app-build
+    url: https://github.com/xtermium/xtermium/actions/workflows/build.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: Releases · Scoop bucket
+    slug: scoop-bucket-updates
+    url: https://github.com/xtermium/scoop/actions/workflows/excavator.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+
   # Payments (Creem, merchant of record).
-  - name: Payments (Creem)
+  - name: Payments · Creem
+    slug: payments-creem
     url: https://api.creem.io/
     __dangerous__body_down_if_text_missing: '"status":"healthy"'
 
-  # Website.
-  - name: Website
+  - name: Website · xtermium.com
+    slug: website
     url: https://xtermium.com/
     __dangerous__body_down_if_text_missing: XTermium
-
-  # GitHub Actions itself, then the pipelines of XTermium's public repositories (each badge reads
-  # "passing" while the workflow's latest run on main passed).
-  - name: GitHub Actions
-    url: https://www.githubstatus.com/api/v2/components.json
-    __dangerous__body_down_if_text_missing: '"name":"Actions","status":"operational"'
-  - name: App nightly build
-    url: https://github.com/xtermium/xtermium/actions/workflows/nightly.yml/badge.svg
-    __dangerous__body_down_if_text_missing: passing
-  - name: App release build
-    url: https://github.com/xtermium/xtermium/actions/workflows/release.yml/badge.svg
-    __dangerous__body_down_if_text_missing: passing
-  - name: App build
-    url: https://github.com/xtermium/xtermium/actions/workflows/build.yml/badge.svg
-    __dangerous__body_down_if_text_missing: passing
-  - name: Scoop bucket updates
-    url: https://github.com/xtermium/scoop/actions/workflows/excavator.yml/badge.svg
-    __dangerous__body_down_if_text_missing: passing
 
 status-website:
   cname: status.xtermium.com
@@ -80,7 +98,7 @@ status-website:
   name: XTermium status
   theme: dark
   introTitle: "Is XTermium working?"
-  introMessage: "Checked every five minutes from outside our server: sync, sign-in, Terminal Co-op, payments, the website and our build pipelines. Health only: nothing about accounts, people or revenue. Incidents open as [issues](https://github.com/xtermium/upptime/issues)."
+  introMessage: "Checked every five minutes from outside our server: sign-in, sync, Terminal Co-op, releases, payments and the website. Health only: nothing about accounts, people or revenue. Incidents open as [issues](https://github.com/xtermium/upptime/issues)."
   navbar:
     - title: Status
       href: /
@@ -88,6 +106,41 @@ status-website:
       href: https://xtermium.com
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
+  customHeadHtml: >-
+    <meta name="theme-color" content="#050506">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap">
+  # The site's palette (xtermium-web DESIGN.md): black ground, surfaces a tone apart, 1px hairlines,
+  # phosphor amber for links and where you are; green/red/orange only for status.
+  css: >-
+    :root{--body-background-color:#050506;--body-text-color:#e6e6e1;--card-background-color:#0b0b0d;
+    --nav-background-color:#0b0b0d;--nav-border-bottom-color:#1f1f24;--nav-current-border-bottom-color:#ffb000;
+    --card-border-color:#1f1f24;--down-border-left-color:#e5534b;--down-background-color:#2a0f0e;
+    --degraded-border-left-color:#d6a071;--up-border-left-color:#8fcf8f;--tag-color:#050506;
+    --tag-up-background-color:#8fcf8f;--tag-down-background-color:#e5534b;--tag-degraded-background-color:#d6a071;
+    --change-background-color:#ffb000;--error-button-border-color:#ffb000;--error-button-background-color:#ffb000;
+    --error-button-color:#050506;--submit-button-border-color:#ffb000;--submit-button-background-color:#ffb000;
+    --submit-button-color:#050506}
+    body{font-family:Commissioner,"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif}
+    h1,h2,h3,h4,nav,.data,code{font-family:"JetBrains Mono","Cascadia Mono",Consolas,"SF Mono",Menlo,monospace}
+    a{color:#ffb000}a:hover{color:#ffc233}nav a,article h4 a{color:#e6e6e1}
+    ::selection{background:#ffb000;color:#050506}
+    :focus-visible{outline:2px solid #ffb000;outline-offset:2px}
+    .group-title{margin:2rem 0 .5rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9d9da6}
+    .group-title::before{content:"$ ";color:#ffb000}
+    article.graph{background-blend-mode:luminosity}
+    footer{color:#9d9da6}
+  # Groups the live-status cards by the "Category · " prefix of each name (see the top of this file).
+  js: >-
+    (function(){var SEP=" · ";function group(){var s=document.querySelector("section.live-status");if(!s)return;
+    var prev=null;s.querySelectorAll("article").forEach(function(a){var l=a.querySelector("h4 a");if(!l)return;
+    var full=a.getAttribute("data-name")||l.textContent.trim();var i=full.indexOf(SEP);if(i<0)return;
+    a.setAttribute("data-name",full);var cat=full.slice(0,i);var name=full.slice(i+SEP.length);if(l.textContent!==name)l.textContent=name;
+    var p=a.previousElementSibling;var has=p&&p.classList.contains("group-title");
+    if(cat!==prev&&!has){var h=document.createElement("h3");h.className="group-title";h.textContent=cat;a.before(h);}
+    prev=cat;});}
+    new MutationObserver(group).observe(document.documentElement,{childList:true,subtree:true});})();
 
 # The repo's description, topics and homepage are set by hand.
 skipDescriptionUpdate: true
