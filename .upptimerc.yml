@@ -1,0 +1,95 @@
+# XTermium's status page: https://status.xtermium.com
+# Upptime checks every endpoint below from GitHub Actions every five minutes (off our own server on
+# purpose). Only health is shown: no accounts, people, payments or revenue. Every URL here is public.
+owner: xtermium
+repo: upptime
+
+sites:
+  # Sync server (account.xtermium.com). /healthz answers 503 when the database or the disk fails;
+  # 502/530 mean Cloudflare can't reach the server. Each check reads one field, so each signal gets
+  # its own line on the page.
+  - name: Sync server
+    url: https://account.xtermium.com/healthz
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_text_missing: '"db":"ok"'
+    maxResponseTime: 2000
+  - name: Sync storage
+    url: https://account.xtermium.com/healthz
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_text_missing: '"storage":"ok"'
+  - name: Sync server load
+    url: https://account.xtermium.com/healthz
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_text_missing: '"busy":'
+    __dangerous__body_degraded: '"busy":true'
+
+  # Sign-in: our own auth service, then the providers people sign in with.
+  - name: Sign-in service
+    url: https://account.xtermium.com/auth/ok
+    __dangerous__body_down_if_text_missing: '"ok":true'
+  - name: Sign in with Google
+    url: https://accounts.google.com/.well-known/openid-configuration
+    __dangerous__body_down_if_text_missing: '"authorization_endpoint"'
+  - name: Sign in with GitHub
+    url: https://github.com/login
+  - name: Sign in with Discord
+    url: https://discord.com/api/v10/gateway
+    __dangerous__body_down_if_text_missing: '"url"'
+
+  # Terminal Co-op: the relay that carries traffic, and whether a ring can be started (the server
+  # makes the writes of a new ring for a throwaway account and rolls them back).
+  - name: Co-op relay
+    url: https://relay.xtermium.com/healthz
+    __dangerous__body_down_if_text_missing: '"status":"ok"'
+  - name: Co-op ring creation
+    url: https://account.xtermium.com/healthz/coop
+    __dangerous__body_down_if_text_missing: '"rings":"ok"'
+
+  # Payments (Creem, merchant of record).
+  - name: Payments (Creem)
+    url: https://api.creem.io/
+    __dangerous__body_down_if_text_missing: '"status":"healthy"'
+
+  # Website.
+  - name: Website
+    url: https://xtermium.com/
+    __dangerous__body_down_if_text_missing: XTermium
+
+  # GitHub Actions itself, then the pipelines of XTermium's public repositories (each badge reads
+  # "passing" while the workflow's latest run on main passed).
+  - name: GitHub Actions
+    url: https://www.githubstatus.com/api/v2/components.json
+    __dangerous__body_down_if_text_missing: '"name":"Actions","status":"operational"'
+  - name: App nightly build
+    url: https://github.com/xtermium/xtermium/actions/workflows/nightly.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: App release build
+    url: https://github.com/xtermium/xtermium/actions/workflows/release.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: App build
+    url: https://github.com/xtermium/xtermium/actions/workflows/build.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  - name: Scoop bucket updates
+    url: https://github.com/xtermium/scoop/actions/workflows/excavator.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+
+status-website:
+  cname: status.xtermium.com
+  logoUrl: https://xtermium.com/favicon.svg
+  favicon: https://xtermium.com/favicon.svg
+  name: XTermium status
+  theme: dark
+  introTitle: "Is XTermium working?"
+  introMessage: "Checked every five minutes from outside our server: sync, sign-in, Terminal Co-op, payments, the website and our build pipelines. Health only: nothing about accounts, people or revenue. Incidents open as [issues](https://github.com/xtermium/upptime/issues)."
+  navbar:
+    - title: Status
+      href: /
+    - title: xtermium.com
+      href: https://xtermium.com
+    - title: GitHub
+      href: https://github.com/$OWNER/$REPO
+
+# The repo's description, topics and homepage are set by hand.
+skipDescriptionUpdate: true
+skipTopicsUpdate: true
+skipHomepageUpdate: true
