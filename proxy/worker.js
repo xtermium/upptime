@@ -15,6 +15,7 @@ const API = [
   new RegExp(`^/repos/${REPO}/commits$`),
 ];
 const RAW = new RegExp(`^/${REPO}/master/(history|graphs)/[\\w./-]+$`); // the page asks for master/ only
+const FONT = new RegExp(`^/${REPO}/master/fonts/[\\w-]+\\.woff2$`); // the page's own fonts (.upptimerc.yml css)
 
 /** Seconds until 90 s after the next 5-minute boundary: when the next check's commit is in. */
 export function ttl(nowMs) {
@@ -25,7 +26,7 @@ export function ttl(nowMs) {
 /** Where a path goes upstream, or null when the page never asks for it. */
 export function upstream(path, search) {
   if (API.some((r) => r.test(path))) return `https://api.github.com${path}${search}`;
-  if (RAW.test(path) && !path.includes("..")) return `https://raw.githubusercontent.com${path}`;
+  if ((RAW.test(path) || FONT.test(path)) && !path.includes("..")) return `https://raw.githubusercontent.com${path}`;
   return null;
 }
 
@@ -55,7 +56,10 @@ export default {
     if (link) res.headers.set("link", link.replaceAll("https://api.github.com", url.origin));
     for (const [k, v] of Object.entries(cors)) res.headers.set(k, v);
     // The browser may keep it a minute; Cloudflare keeps it until the next check's results are in.
-    res.headers.set("cache-control", up.ok ? `public, max-age=60, s-maxage=${age}` : "no-store");
+    // Fonts never change with a check: a day everywhere, typed as fonts (raw GitHub serves them as octet-stream).
+    const font = FONT.test(url.pathname);
+    if (font && up.ok) res.headers.set("content-type", "font/woff2");
+    res.headers.set("cache-control", !up.ok ? "no-store" : font ? "public, max-age=86400" : `public, max-age=60, s-maxage=${age}`);
     if (up.ok) ctx.waitUntil(cache.put(key, res.clone()));
     return res;
   },

@@ -114,15 +114,15 @@ status-website:
       href: https://xtermium.com
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
-  # The site's fonts, served from this page (assets/fonts, copied from xtermium-web): no third party sees visitors.
+  # The site's fonts (fonts/, copied from xtermium-web), served by our proxy (proxy/): no third party sees visitors.
   customHeadHtml: >-
     <meta name="theme-color" content="#050506">
-    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://status-api.xtermium.com/xtermium/upptime/master/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
   # The site's palette (xtermium-web DESIGN.md): black ground, surfaces a tone apart, 1px hairlines,
   # phosphor amber for links and where you are; green/red/orange only for status.
   css: >-
-    @font-face{font-family:Commissioner;font-style:normal;font-weight:300 900;font-display:swap;src:url(/fonts/commissioner-latin.woff2) format("woff2")}
-    @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:100 800;font-display:swap;src:url(/fonts/jetbrains-mono-latin.woff2) format("woff2")}
+    @font-face{font-family:Commissioner;font-style:normal;font-weight:300 900;font-display:swap;src:url(https://status-api.xtermium.com/xtermium/upptime/master/fonts/commissioner-latin.woff2) format("woff2")}
+    @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:100 800;font-display:swap;src:url(https://status-api.xtermium.com/xtermium/upptime/master/fonts/jetbrains-mono-latin.woff2) format("woff2")}
     :root{--body-background-color:#050506;--body-text-color:#e6e6e1;--card-background-color:#0b0b0d;
     --nav-background-color:#0b0b0d;--nav-border-bottom-color:#1f1f24;--nav-current-border-bottom-color:#ffb000;
     --card-border-color:#1f1f24;--down-border-left-color:#e5534b;--down-background-color:#2a0f0e;
