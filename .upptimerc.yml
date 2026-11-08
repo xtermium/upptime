@@ -55,6 +55,10 @@ sites:
   - name: Co-op · Ring creation
     slug: co-op-ring-creation
     url: https://account.xtermium.com/healthz/coop
+    # The probe writes, so the server answers only the status page: STATUS_TOKEN is an Actions
+    # secret here and in the VPS .env (xtermium-api docs/runbook.md).
+    headers:
+      - "Authorization: Bearer $STATUS_TOKEN"
     __dangerous__body_down_if_text_missing: '"rings":"ok"'
 
   # GitHub Actions itself, then the pipelines of XTermium's public repositories (each badge reads
