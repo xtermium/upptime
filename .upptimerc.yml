@@ -79,10 +79,31 @@ sites:
     slug: app-build
     url: https://github.com/xtermium/xtermium/actions/workflows/build.yml/badge.svg
     __dangerous__body_down_if_text_missing: passing
-  - name: Releases · Scoop bucket
+
+  # Package managers: the workflow that keeps each one's package at the latest build (each badge
+  # reads "passing" while its latest run passed). Scoop and Homebrew carry the nightly build too.
+  - name: Packages · Scoop
     slug: scoop-bucket-updates
     url: https://github.com/xtermium/scoop/actions/workflows/excavator.yml/badge.svg
     __dangerous__body_down_if_text_missing: passing
+  - name: Packages · Homebrew
+    slug: packages-homebrew
+    url: https://github.com/xtermium/homebrew-tap/actions/workflows/bump.yml/badge.svg
+    __dangerous__body_down_if_text_missing: passing
+  # AUR, winget and Chocolatey: their workflows have not run yet (the first submissions are
+  # pending), so their badges read "no status". Uncomment each once its workflow has passed.
+  # - name: Packages · AUR
+  #   slug: packages-aur
+  #   url: https://github.com/xtermium/packages/actions/workflows/aur.yml/badge.svg
+  #   __dangerous__body_down_if_text_missing: passing
+  # - name: Packages · winget
+  #   slug: packages-winget
+  #   url: https://github.com/xtermium/packages/actions/workflows/winget.yml/badge.svg
+  #   __dangerous__body_down_if_text_missing: passing
+  # - name: Packages · Chocolatey
+  #   slug: packages-chocolatey
+  #   url: https://github.com/xtermium/packages/actions/workflows/choco.yml/badge.svg
+  #   __dangerous__body_down_if_text_missing: passing
 
   # Payments (Creem, merchant of record).
   - name: Payments · Creem
