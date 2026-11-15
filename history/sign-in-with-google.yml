@@ -1,7 +1,7 @@
 url: https://accounts.google.com/.well-known/openid-configuration
 status: up
 code: 200
-responseTime: 13
-lastUpdated: 2026-11-14T02:54:32.141Z
+responseTime: 25
+lastUpdated: 2026-11-15T02:22:11.417Z
 startTime: 2026-11-08T02:35:28.053Z
 generator: Upptime <https://github.com/upptime/upptime>
